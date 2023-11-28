@@ -2,6 +2,12 @@ def path = ""
 
 pipeline {
 
+    agent {
+        node {
+            label 'master'
+        }
+    }
+
     stages {
         
         stage('S1 8264229Q') {
