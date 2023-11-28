@@ -1,0 +1,74 @@
+def path = ""
+
+pipeline {
+
+    stages {
+        
+        stage('S1 8264229Q') {
+            steps {
+                sh """
+                echo "Stage1_8264229Q: Release Environment Preparation Completed"
+                """
+            }
+        }
+
+        stage('S2 8264229Q') {
+            steps {
+                sh """
+                echo "Stage2_8264229Q: Release Container WebApp_8264229Q Created Completed"
+                docker stop WebApp_8264229Q
+                docker rm WebApp_8264229Q
+                docker run -d -it -p 31200:80 --name WebApp_8264229Q wb1_image_8264229q /bin/sh -c "apachectl -D FOREGROUND"
+                
+                """
+            }
+        }
+        
+        stage('S3 8264229Q'){
+        	parallel {
+            		stage('S3 8264229Q API Test'){
+            			steps {
+				        	sh "echo Stage3_8264229Q: API Test Completed"
+            			}
+            		}
+        
+            		stage('S3 8264229Q Scan Test'){
+            			steps {
+            				sh "echo Stage3_8264229Q: Scan Test Completed"
+            			}
+            		}
+        
+        	}
+        }
+
+
+        stage('S4 8264229Q') {
+            steps {
+         		script {
+                        path = input(
+                                message: '8264229Q, proceed to release the work to next phase?',
+                                ok: 'Submit',
+                                parameters: [choice(name:'',choices: ['Proceed', 'Abort'])]
+                        )
+		        }
+            }	
+        }
+
+
+        stage('S5 8264229Q') {
+            steps {
+                 script {
+                    
+                    if (path == 'Proceed') {
+                        echo 'Stage5_8264229Q: Work Release – Proceeds to Next Phase'
+                        
+                    } else if (path == 'Abort') {
+                        echo 'Stage5_8264229Q: Work Release - Stops'
+                      
+                    }
+
+		        }
+            }
+        }
+	}   
+}
