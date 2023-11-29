@@ -21,11 +21,12 @@ pipeline {
         stage('S2 8264229Q') {
             steps {
                 sh """
-                echo "Stage2_8264229Q: Release Container WebApp_8264229Q Created Completed"
+
                 docker stop WebApp_8264229Q
                 docker rm WebApp_8264229Q
                 docker run -d -it -p 31200:80 --name WebApp_8264229Q wb1_image_8264229q /bin/sh -c "apachectl -D FOREGROUND"
-                
+                echo "Stage2_8264229Q: Release Container WebApp_8264229Q Created Completed"
+
                 """
             }
         }
