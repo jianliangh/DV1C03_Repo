@@ -31,7 +31,7 @@ pipeline {
         	parallel {
             		stage('S3 8264229Q API Test'){
             			steps {
-					echo "Stage3_8264229Q: API Test Completed"
+				        	  echo "Stage3_8264229Q: API Test Completed"
             			}
             		}
         
@@ -42,5 +42,22 @@ pipeline {
             		}
         	}
         }
- }
+
+        stage('S4 8264229Q') {
+            steps { 
+                  input('8264229Q, proceed to release the work to next phase?')
+		        }
+        }
+
+        stage('S5 8264229Q') {
+            when {
+                  not {
+                        branch 'Stage5_8264229Q: Work Release - Stops'
+                  }
+            }
+            steps{
+                  echo 'Stage5_8264229Q: Work Release – Proceeds to Next Phase'
+            }
+        }
+	}   
 }
