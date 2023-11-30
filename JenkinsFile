@@ -52,7 +52,7 @@ pipeline {
         stage('S5 8264229Q') {
             when {
                   not {
-                        echo 'Stage5_8264229Q: Work Release - Stops'
+                        branch 'Stage5_8264229Q: Work Release - Stops'
                   }
             }
             steps{
