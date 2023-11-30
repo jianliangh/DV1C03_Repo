@@ -1,0 +1,63 @@
+pipeline {
+
+    agent {
+        node {
+            label 'master'
+        }
+    }
+
+    stages {
+        
+        stage('S1 8264229Q') {
+            steps {
+                echo "Stage1_8264229Q: Release Environment Preparation Completed"
+            }
+        }
+
+        stage('S2 8264229Q') {
+            steps {
+                sh """
+
+                docker stop WebApp_8264229Q
+                docker rm WebApp_8264229Q
+                docker run -d -it -p 31200:80 --name WebApp_8264229Q wb1_image_8264229q /bin/sh -c "apachectl -D FOREGROUND"
+                echo "Stage2_8264229Q: Release Container WebApp_8264229Q Created Completed"
+
+                """
+            }
+        }
+        
+        stage('S3 8264229Q'){
+        	parallel {
+            		stage('S3 8264229Q API Test'){
+            			steps {
+				        	  echo "Stage3_8264229Q: API Test Completed"
+            			}
+            		}
+        
+            		stage('S3 8264229Q Scan Test'){
+            			steps {
+            				echo "Stage3_8264229Q: Scan Test Completed"
+            			}
+            		}
+        	}
+        }
+
+        stage('S4 8264229Q') {
+            steps { 
+                  input('8264229Q, proceed to release the work to next phase?')
+		        }
+        }
+
+        stage('S5 8264229Q') {
+            when {
+                  not {
+                        echo 'Stage5_8264229Q: Work Release - Stops'
+                  }
+            }
+            steps{
+                  echo 'Stage5_8264229Q: Work Release – Proceeds to Next Phase'
+            }
+        }
+	}   
+}
